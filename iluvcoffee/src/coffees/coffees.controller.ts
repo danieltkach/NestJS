@@ -1,21 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import {
   Body,
   Controller,
+  Delete,
   Get,
-  HttpCode,
-  HttpStatus,
   Param,
+  Patch,
   Post,
-  Res,
 } from '@nestjs/common';
-
-interface CreateCoffeeDto {
-  name: string;
-  brand: string;
-  flavors: string[];
-}
 
 @Controller('coffees')
 export class CoffeesController {
@@ -24,21 +15,24 @@ export class CoffeesController {
     return 'This action returns all coffees';
   }
 
-  @Get()
-  findAll2(@Res() response) {
-    // Express.js example using status() and send() methods
-    response.status(200).send('This action returns all coffees');
-  }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return `This action returns #${id} coffee`;
   }
 
   @Post()
-  @HttpCode(HttpStatus.GONE)
-  create(@Body() body: CreateCoffeeDto) {
+  create(@Body() body) {
     return body;
     // return `This action creates a coffee`;
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() body) {
+    return `This action updates #${id} coffee`;
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return `This action removes #${id} coffee`;
   }
 }
