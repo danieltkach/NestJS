@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
@@ -8,6 +9,7 @@ import { Flavor } from './entities/flavor.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { Event } from '../events/entities/event.entity';
 import { COFFEE_BRANDS } from './coffees.constants';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable({ scope: Scope.DEFAULT })
 export class CoffeesService {
@@ -17,9 +19,13 @@ export class CoffeesService {
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
     private readonly dataSource: DataSource,
+    private readonly configService: ConfigService,
     @Inject(COFFEE_BRANDS) coffeeBrands: string[],
   ) {
     console.log(coffeeBrands);
+    /* Accessing process.env variables from ConfigService */
+    const databaseHost = this.configService.get('database.host', 'localhost');
+    console.log(databaseHost);
   }
 
   findAll(paginationQuery: PaginationQueryDto) {
