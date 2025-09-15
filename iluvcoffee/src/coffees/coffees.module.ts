@@ -6,6 +6,7 @@ import { Coffee } from './entities/coffee.entity';
 import { Flavor } from './entities/flavor.entity';
 import { Event } from '../events/entities/event.entity';
 import { COFFEE_BRANDS } from './coffees.constants';
+import { Connection } from 'typeorm';
 
 class ConfigService {}
 class DevelopmentConfigService {}
@@ -27,8 +28,13 @@ class CoffeeBrandsFactory {
     // { provide: COFFEE_BRANDS, useValue: ['buddy brew', 'nescafe'] },
     {
       provide: COFFEE_BRANDS,
-      useFactory: (brandsFactory: CoffeeBrandsFactory) =>
-        brandsFactory.create(),
+      // useFactory: (brandsFactory: CoffeeBrandsFactory) =>
+      //   brandsFactory.create(),
+      useFactory: async (connection: Connection): Promise<string[]> => {
+        // const coffeeBrands = await connection.query('SELECT * ...');
+        const coffeeBrands = await Promise.resolve(['buddy brew', 'nescafe']);
+        return coffeeBrands;
+      },
       inject: [CoffeeBrandsFactory],
     },
     {
