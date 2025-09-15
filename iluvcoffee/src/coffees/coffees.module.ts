@@ -25,6 +25,7 @@ class CoffeeBrandsFactory {
   controllers: [CoffeesController],
   providers: [
     CoffeesService,
+    CoffeeBrandsFactory,
     // { provide: COFFEE_BRANDS, useValue: ['buddy brew', 'nescafe'] },
     {
       provide: COFFEE_BRANDS,
